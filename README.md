@@ -22,12 +22,14 @@ O **BIACCOSystem** é uma plataforma desenvolvida para otimizar o compartilhamen
 
 ## ⚙️ Configuração do Banco de Dados
 
-### 1. Criar o Schema
+### 1. Criar o Schema (Necessário um Banco de Dados MySQL)
 
-Execute o script SQL localizado na pasta de scripts para criar a estrutura de tabelas:
+No seu MySQL, execute o script SQL (shema.sql) localizado na pasta de scripts para criar a estrutura de tabelas:
 
 ```sql
--- scripts/schema.sql
+├── scripts/             # Scripts de automação
+│   ├── migrar.ts        # Script de migração do banco
+│   └── schema.sql       # Definição das tabelas SQL
 ```
 2. Configurar Variáveis de Ambiente
 Crie um arquivo chamado .env na raiz do projeto (este arquivo é ignorado pelo Git para sua segurança):
