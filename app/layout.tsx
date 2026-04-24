@@ -9,7 +9,6 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: 'BIACCOSystem - IA e Ciência da Computação',
   description: 'Plataforma de estudos colaborativa para alunos de Inteligência Artificial e Ciência da Computação',
-  generator: 'Bindit',
   icons: {
     icon: [
       {
