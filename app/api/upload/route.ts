@@ -1,70 +1,39 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getSession, canCreateContent } from '@/lib/auth'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
-import { existsSync } from 'fs'
+import { NextRequest, NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
-export async function POST(request: NextRequest) {
+export const runtime = 'nodejs';
+
+export async function POST(req: NextRequest) {
   try {
-    const session = await getSession()
-
-    if (!session) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-    }
-
-    if (!canCreateContent(session.role)) {
-      return NextResponse.json(
-        { error: 'Sem permissão para fazer upload' },
-        { status: 403 }
-      )
-    }
-
-    const formData = await request.formData()
-    const file = formData.get('file') as File | null
+    const formData = await req.formData();
+    const file = formData.get('file') as File;
 
     if (!file) {
-      return NextResponse.json({ error: 'Nenhum arquivo enviado' }, { status: 400 })
+      return NextResponse.json({ error: "Nenhum arquivo enviado" }, { status: 400 });
     }
 
-    // Validate file size (max 50MB)
-    const maxSize = 50 * 1024 * 1024
-    if (file.size > maxSize) {
-      return NextResponse.json(
-        { error: 'Arquivo muito grande. Máximo permitido: 50MB' },
-        { status: 400 }
-      )
+    // Definindo o caminho dentro do Volume montado
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+    
+    // Cria a pasta caso o volume esteja vazio
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
     }
 
-    // Create uploads directory if it doesn't exist
-    const uploadsDir = join(process.cwd(), 'public', 'uploads')
-    if (!existsSync(uploadsDir)) {
-      await mkdir(uploadsDir, { recursive: true })
-    }
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const fileName = `${Date.now()}-${file.name.replace(/\s/g, '_')}`;
+    const filePath = path.join(uploadDir, fileName);
 
-    // Generate unique filename
-    const timestamp = Date.now()
-    const randomStr = Math.random().toString(36).substring(2, 8)
-    const extension = file.name.split('.').pop() || ''
-    const filename = `${timestamp}-${randomStr}.${extension}`
-    const filepath = join(uploadsDir, filename)
+    // Escreve o arquivo no disco (Volume do Railway)
+    fs.writeFileSync(filePath, buffer);
 
-    // Write file
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-    await writeFile(filepath, buffer)
+    // A URL será o seu domínio + /uploads/nome-do-arquivo
+    const fileUrl = `/uploads/${fileName}`;
 
-    // Return URL
-    const url = `/uploads/${filename}`
-
-    return NextResponse.json({ url, filename })
-  } catch (error) {
-    console.error('Upload error:', error)
-    return NextResponse.json({ error: 'Erro ao fazer upload' }, { status: 500 })
+    return NextResponse.json({ url: fileUrl });
+  } catch (error: any) {
+    console.error("Erro no upload local:", error);
+    return NextResponse.json({ error: "Erro ao salvar arquivo no volume" }, { status: 500 });
   }
-}
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
 }

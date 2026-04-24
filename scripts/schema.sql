@@ -143,8 +143,8 @@ INSERT INTO course_subjects (course_id, subject_id) VALUES
 
 -- Associar matérias COMPARTILHADAS a AMBOS os cursos (IDs 11-19)
 INSERT INTO course_subjects (course_id, subject_id) VALUES
-(1, 11), (1, 12), (1, 13), (1, 14), (1, 15), (1, 16), (1, 17), (1, 18), (1, 19),
-(2, 11), (2, 12), (2, 13), (2, 14), (2, 15), (2, 16), (2, 17), (2, 18), (2, 19);
+(1, 1), (1, 2), (1, 3), (1, 4),
+(2, 1), (2, 2), (2, 3), (2, 4);
 
 -- Criar usuário admin padrão (senha: admin123)
 -- Hash bcrypt de 'admin123'

@@ -27,7 +27,7 @@ export function Header() {
         <div className="flex h-16 items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2">
             <Brain className="size-8 text-primary" />
-            <span className="text-xl font-bold text-foreground hidden sm:inline">BIACCOSystem 026</span>
+            <span className="text-xl font-bold text-foreground hidden sm:inline">BIACCOSystem</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
@@ -43,14 +43,6 @@ export function Header() {
             >
               Cursos
             </Link>
-            {user && canCreateContent(user.role) && (
-              <Link
-                href="/manage"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Gerenciar
-              </Link>
-            )}
             {user && isAdmin(user.role) && (
               <Link
                 href="/admin"

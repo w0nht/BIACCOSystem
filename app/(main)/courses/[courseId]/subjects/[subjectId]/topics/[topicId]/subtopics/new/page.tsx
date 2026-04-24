@@ -121,6 +121,7 @@ export default function NewSubtopicPage() {
     try {
       const uploadedAttachments = []
 
+      // 1. Upload dos arquivos (Opção B: Salvar no disco local via API)
       for (const file of files) {
         const formData = new FormData()
         formData.append('file', file.file)
@@ -133,16 +134,21 @@ export default function NewSubtopicPage() {
         if (!uploadRes.ok) throw new Error(`Erro no upload: ${file.name}`)
 
         const uploadData = await uploadRes.json()
+        
+        // Mapeamento de tipo para o banco de dados
+        const attachmentType = file.type.includes('pdf') ? 'PDF' : 
+                               file.type.startsWith('video/') ? 'VIDEO' :
+                               file.type.startsWith('image/') ? 'IMAGE' : 'DOCUMENT'
+
         uploadedAttachments.push({
           name: file.name,
-          url: uploadData.url,
-          type: file.type.includes('pdf') ? 'PDF' : 
-                file.type.startsWith('video/') ? 'VIDEO' :
-                file.type.startsWith('image/') ? 'IMAGE' : 'DOCUMENT',
+          url: uploadData.url, // URL pública retornada pelo servidor
+          type: attachmentType,
           size: file.size,
         })
       }
 
+      // 2. Criação do subtópico enviando o authorId (Resolve o erro 1452)
       const res = await fetch('/api/subtopics', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -150,19 +156,20 @@ export default function NewSubtopicPage() {
           title, 
           content, 
           topicId,
+          authorId: user?.id, // Envia o ID do autor autenticado
           attachments: uploadedAttachments,
         }),
       })
 
       if (!res.ok) {
         const data = await res.json()
-        throw new Error(data.error || 'Erro ao criar subtópico')
+        throw new Error(data.error || 'Erro ao criar subtópico no banco de dados')
       }
 
       router.push(`/courses/${courseId}/subjects/${subjectId}/topics/${topicId}`)
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao salvar')
+      setError(err instanceof Error ? err.message : 'Erro ao processar a solicitação')
     } finally {
       setIsSaving(false)
     }
@@ -181,7 +188,7 @@ export default function NewSubtopicPage() {
       <div className="container mx-auto px-4 py-8">
         <Card>
           <CardContent className="py-16 text-center">
-            <h3 className="text-xl font-semibold mb-4">Acesso não autorizado ou dado inválido</h3>
+            <h3 className="text-xl font-semibold mb-4">Acesso não autorizado ou tópico inexistente</h3>
             <Button asChild>
               <Link href="/dashboard">Voltar ao início</Link>
             </Button>
@@ -211,7 +218,6 @@ export default function NewSubtopicPage() {
 
           <BreadcrumbSeparator />
 
-          {/* PROTEÇÃO: Optional chaining nos dados aninhados */}
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
               <Link href={`/courses/${courseId}`}>
@@ -336,7 +342,7 @@ export default function NewSubtopicPage() {
 
             <Button type="submit" className="w-full gap-2" disabled={isSaving}>
               {isSaving ? <Spinner className="size-4" /> : <Save className="size-4" />}
-              {isSaving ? 'Enviando arquivos e salvando...' : 'Publicar subtópico'}
+              {isSaving ? 'Enviando e salvando...' : 'Publicar subtópico'}
             </Button>
           </form>
         </CardContent>

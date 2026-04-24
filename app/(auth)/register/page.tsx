@@ -65,7 +65,7 @@ export default function RegisterPage() {
         <div className="flex flex-col items-center mb-8">
           <div className="flex items-center gap-2 mb-2">
             <Brain className="size-10 text-primary" />
-            <span className="text-2xl font-bold text-foreground">Forum Acadêmico</span>
+            <span className="text-2xl font-bold text-foreground">BIACCOSystem</span>
           </div>
           <p className="text-muted-foreground text-center">
             Crie sua conta para acessar o conteúdo

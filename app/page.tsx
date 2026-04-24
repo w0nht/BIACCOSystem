@@ -11,7 +11,7 @@ export default function HomePage() {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-2">
               <Brain className="size-8 text-primary" />
-              <span className="text-xl font-bold text-foreground">Forum Acadêmico</span>
+              <span className="text-xl font-bold text-foreground">BIACCOSystem</span>
             </div>
             <div className="flex items-center gap-2">
               <Button variant="ghost" asChild>
@@ -30,7 +30,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm text-primary mb-6">
             <Brain className="size-4" />
-            Plataforma de estudos colaborativa
+            Plataforma de estudos colaborativa para a galera de IA e CCO da Unifei
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold text-foreground max-w-4xl mx-auto leading-tight text-balance">
@@ -121,7 +121,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="py-8 border-t border-border">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>Forum Acadêmico - Plataforma de estudos para IA e Ciência da Computação</p>
+          <p>Criado por Wanderson Dias</p>
         </div>
       </footer>
     </div>
