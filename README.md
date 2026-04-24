@@ -1,8 +1,6 @@
 # 🎓 BIACCOSystem - Gestão de Arquivos Acadêmicos
 
 <div align="left">
-  <img height="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="Python"/>
-  <img height="40" src="https://cdn.iconscout.com/icon/free/png-512/c-programming-569564.png" alt="C++"/>
   <img height="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="Typescript"/>
   <img height="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="Javascript"/>
   <img height="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" alt="Nodejs"/>
