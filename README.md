@@ -53,9 +53,8 @@ pnpm install
 
 ```bash
 pnpm ts-node scripts/migrar.ts
-4. Iniciar o Servidor de Desenvolvimento
 ```
-3. Rodar o Projeto
+3. Rodar a Aplicação
 
 ```bash
 pnpm dev
